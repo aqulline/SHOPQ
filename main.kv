@@ -1,0 +1,30 @@
+#:import sm kivy.uix.screenmanager
+ScreenManager:
+    id:manager
+    transition:sm.FadeTransition(duration=.0)
+    MDScreen:
+        name:"home"
+        md_bg_color:214/255, 223/255,232/255, 1
+        MDBottomNavigation:
+            id:bnav
+            panel_color: 1, 1, 1, 1
+            MDBottomNavigationItem:
+                name: 'home'
+                text: 'Trans.'
+                icon: 'notebook-outline'
+                FloatLayout:
+            MDBottomNavigationItem:
+                name: 'history'
+                text: 'History'
+                icon: 'history'
+                FloatLayout:
+            MDBottomNavigationItem:
+                name: 'Trends'
+                text: 'Trends'
+                icon: 'chart-line'
+                FloatLayout:
+            MDBottomNavigationItem:
+                name: 'Debts'
+                text: 'Debts'
+                icon: 'cash-minus'
+                FloatLayout:
