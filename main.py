@@ -118,6 +118,16 @@ class MainApp(MDApp):
     product_exp_month = StringProperty("")
     data = DictionaryProperty()
 
+    # search details
+    days_to_exp = StringProperty("")
+    number_sold = StringProperty("")
+    code = StringProperty("")
+    p_expire = StringProperty("")
+    p_name = StringProperty("")
+    p_price = StringProperty("")
+    p_quantity = StringProperty("")
+    sold_amount = StringProperty("")
+
     # Selling data
     amount_sold = StringProperty("")
     quantity_sold = StringProperty("")
@@ -151,8 +161,12 @@ class MainApp(MDApp):
 
     def save_product(self, product_name, product_price, product_quantity, product_barcode, product_exp_year,
                      product_exp_month):
-        DB.save_product(DB(), product_name, product_price, product_quantity, product_barcode, product_exp_year,
-                        product_exp_month)
+        if product_barcode.isdigit():
+
+            DB.save_product(DB(), product_name, product_price, product_quantity, product_barcode, product_exp_year,
+                            product_exp_month)
+        else:
+            toast("scan barcode")
 
     def caller_details(self):
         Clock.schedule_once(self.get_product_details, .2)
@@ -238,8 +252,9 @@ class MainApp(MDApp):
             from firebase_admin import credentials, initialize_app, db
             cred = credentials.Certificate("credential/farmzon-abdcb-c4c57249e43b.json")
             initialize_app(cred, {'databaseURL': 'https://farmzon-abdcb.firebaseio.com/'})
-            self.my_stream = db.reference('ShopCode').child("Sold").child(str(datetime.datetime.now().date().year)).child(
-                    DB.date_format(DB())).listen(
+            self.my_stream = db.reference('ShopCode').child("Sold").child(
+                str(datetime.datetime.now().date().year)).child(
+                DB.date_format(DB())).listen(
                 self.stream_work)
         except:
             print("Woks sorry!!!")
@@ -249,6 +264,36 @@ class MainApp(MDApp):
         CAMERA SCAN FUNCTION
     
     """
+
+    def get_details(self):
+        self.root.ids.details_scan.connect_camera(enable_analyze_pixels=True, default_zoom=0.0)
+        print("connected")
+
+    def stop_camera_detail(self):
+        self.root.ids.details_scan.disconnect_camera()
+
+    @mainthread
+    def get_QRcode(self, result):
+        barcode = str(result.data)
+        code_type = str(result.type)
+        print(barcode)
+        if barcode:
+            if code_type == "QRCODE":
+                barcode = barcode.replace("b", "").replace("'", "")
+
+                self.product_barcode = barcode
+
+                name = self.root.ids.product_name
+
+                price = self.root.ids.product_price
+
+                name.text, price.text = DB.get_data(DB(), self.product_barcode)[0], \
+                    DB.get_data(DB(), self.product_barcode)[1]
+
+                self.root.ids.detail_preview.text = barcode
+
+        else:
+            print("Reaaly")
 
     def on_kv_post(self):
         self.root.ids.preview.connect_camera(enable_analyze_pixels=True, default_zoom=0.0)
@@ -295,6 +340,51 @@ class MainApp(MDApp):
 
         else:
             print("Reaaly")
+
+    def get_details_search(self):
+        self.root.ids.search_scan.connect_camera(enable_analyze_pixels=True, default_zoom=0.0)
+        print("connected")
+
+    def stop_camera_search(self):
+        self.root.ids.search_scan.disconnect_camera()
+
+    @mainthread
+    def get_search(self, result):
+        barcode = str(result.data)
+        code_type = str(result.type)
+        print(barcode)
+        if barcode:
+            if code_type != "QRCODE":
+                barcode = barcode.replace("b", "").replace("'", "")
+
+                self.product_barcode = barcode
+
+                self.root.ids.search_preview.text = barcode
+
+
+        else:
+            print("Reaaly")
+
+    def get_data_coller(self):
+        Clock.schedule_once(self.get_search_data, .2)
+
+    def get_search_data(self, *args):
+        data = DB.get_product(DB(), self.product_barcode)
+
+        if data:
+            self.days_to_exp = data['days_to_exp']
+            self.number_sold = data['number_sold']
+            self.code = data['product_barcode']
+            self.p_expire = data['product_expire']
+            self.p_name = data['product_name']
+            self.p_price = data['product_price']
+            self.p_quantity = data['product_quantity']
+            self.sold_amount = data['sold_amount']
+
+        else:
+            toast("no data found")
+
+
 
     """
 

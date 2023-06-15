@@ -125,7 +125,7 @@ ScreenManager:
                                     text:"scan Qrcode"
                                     pos_hint:{"center_x":.7, "center_y":.9}
                                     on_release:
-                                        app.screen_capture("scanner")
+                                        app.screen_capture("detail_scanner")
                                 MDTextField:
                                     id:product_name
                                     mode: "rectangle"
@@ -186,101 +186,96 @@ ScreenManager:
                         Tab:
                             title:"Search Product"
                             FloatLayout:
-                                MDLabel:
-                                    text:"Search Product"
-                                    halign:"center"
-                                    font_size:"25sp"
-                                    pos_hint:{"center_x":.23, "center_y":.95}
                                 Front:
-                                    pos_hint:{'center_x':.5, 'center_y':.45}
-                                    size:app.size_x/1.1,app.size_y/1.4
-
+                                    pos_hint:{'center_x':.5, 'center_y':.5}
+                                    size:app.size_x/1.1,app.size_y/1.35
+                                MDFillRoundFlatIconButton:
+                                    icon:"barcode"
+                                    text:"scan product"
+                                    pos_hint:{"center_x":.5, "center_y":.9}
+                                    on_release:
+                                        app.screen_capture("search_scanner")
                                 MDLabel:
                                     text:"Product Barcode"
                                     halign:"left"
                                     font_size:"20sp"
-                                    pos_hint:{"center_x":.6, "center_y":.73}
+                                    pos_hint:{"center_x":.6, "center_y":.8}
                                 MDLabel:
-                                    text:"8867568776876"
+                                    text:app.code
                                     halign:"center"
                                     font_size:"18sp"
-                                    pos_hint:{"center_x":.7, "center_y":.73}
+                                    pos_hint:{"center_x":.7, "center_y":.8}
                                 MDLabel:
                                     text:"Product Name"
                                     halign:"left"
                                     font_size:"20sp"
-                                    pos_hint:{"center_x":.6, "center_y":.63}
+                                    pos_hint:{"center_x":.6, "center_y":.7}
                                 MDLabel:
-                                    text:"Uhai"
+                                    text:app.p_name
                                     halign:"center"
                                     font_size:"18sp"
-                                    pos_hint:{"center_x":.7, "center_y":.63}
+                                    pos_hint:{"center_x":.7, "center_y":.7}
+                                MDLabel:
+                                    text:"Product price"
+                                    halign:"left"
+                                    font_size:"20sp"
+                                    pos_hint:{"center_x":.6, "center_y":.6}
+                                MDLabel:
+                                    text:app.p_price
+                                    halign:"center"
+                                    font_size:"18sp"
+                                    pos_hint:{"center_x":.7, "center_y":.6}
                                 MDLabel:
                                     text:"Product Expire"
                                     halign:"left"
                                     font_size:"20sp"
-                                    pos_hint:{"center_x":.6, "center_y":.53}
+                                    pos_hint:{"center_x":.6, "center_y":.5}
                                 MDLabel:
-                                    text:"2024-7"
+                                    text:app.p_expire
                                     halign:"center"
                                     font_size:"18sp"
-                                    pos_hint:{"center_x":.7, "center_y":.53}
+                                    pos_hint:{"center_x":.7, "center_y":.5}
                                 MDLabel:
                                     text:"Days to expire"
                                     halign:"left"
                                     font_size:"20sp"
-                                    pos_hint:{"center_x":.6, "center_y":.43}
+                                    pos_hint:{"center_x":.6, "center_y":.4}
                                 MDLabel:
-                                    text:"436"
+                                    text:app.days_to_exp
                                     halign:"center"
                                     font_size:"18sp"
-                                    pos_hint:{"center_x":.7, "center_y":.43}
+                                    pos_hint:{"center_x":.7, "center_y":.4}
                                 MDLabel:
                                     text:"Quantity"
                                     halign:"left"
                                     font_size:"20sp"
-                                    pos_hint:{"center_x":.6, "center_y":.33}
+                                    pos_hint:{"center_x":.6, "center_y":.3}
                                 MDLabel:
-                                    text:"2000"
+                                    text:app.p_quantity
                                     halign:"center"
                                     font_size:"18sp"
-                                    pos_hint:{"center_x":.7, "center_y":.33}
+                                    pos_hint:{"center_x":.7, "center_y":.3}
                                 MDLabel:
                                     text:"Sold Amount"
                                     halign:"left"
                                     font_size:"20sp"
-                                    pos_hint:{"center_x":.6, "center_y":.23}
+                                    pos_hint:{"center_x":.6, "center_y":.2}
                                 MDLabel:
-                                    text:"76"
+                                    text:app.sold_amount
                                     halign:"center"
                                     font_size:"18sp"
-                                    pos_hint:{"center_x":.7, "center_y":.23}
-                                MDLabel:
-                                    text:"Sold Quantity"
-                                    halign:"left"
-                                    font_size:"20sp"
-                                    pos_hint:{"center_x":.6, "center_y":.13}
-                                MDLabel:
-                                    text:"67"
-                                    halign:"center"
-                                    font_size:"18sp"
-                                    pos_hint:{"center_x":.7, "center_y":.13}
+                                    pos_hint:{"center_x":.7, "center_y":.2}
                                 MDLabel:
                                     text:"Number Sold"
                                     halign:"left"
                                     font_size:"20sp"
-                                    pos_hint:{"center_x":.6, "center_y":.05}
+                                    pos_hint:{"center_x":.6, "center_y":.1}
                                 MDLabel:
-                                    text:"78"
+                                    text:app.number_sold
                                     halign:"center"
                                     font_size:"18sp"
-                                    pos_hint:{"center_x":.7, "center_y":.05}
-                                MDFillRoundFlatIconButton:
-                                    icon:"barcode"
-                                    text:"scan product"
-                                    pos_hint:{"center_x":.5, "center_y":.83}
-                                    on_release:
-                                        app.screen_capture("scanner_sell")
+                                    pos_hint:{"center_x":.7, "center_y":.1}
+
 
             MDBottomNavigationItem:
                 name: 'Trends'
@@ -345,8 +340,54 @@ ScreenManager:
                 on_release:
                     app.sell_product()
 
+    MDScreen:
+        name:"search_scanner"
+        on_enter:
+            app.get_details_search()
+        on_leave:
+            app.stop_camera_search()
+        MDBoxLayout:
+            orientation: "vertical"
+            Scan_Analyze:
+                aspect_ratio: "16:9"
+                extracted_data:app.get_search
+                id:search_scan
+            MDLabel:
+                id:search_preview
+                size_hint_y: None
+                halign:"center"
+                font_size:"18sp"
+            MDFillRoundFlatIconButton:
+                icon:"arrow-right"
+                text:"Capture code"
+                pos_hint:{"center_x":.5, "center_y":.3}
+                on_release:
+                    app.screen_capture("home")
+                    app.get_data_coller()
 
-
+    MDScreen:
+        name:"detail_scanner"
+        on_enter:
+            app.get_details()
+        on_leave:
+            app.stop_camera_detail()
+        MDBoxLayout:
+            orientation: "vertical"
+            Scan_Analyze:
+                aspect_ratio: "16:9"
+                extracted_data:app.get_QRcode
+                id:details_scan
+            MDLabel:
+                id:detail_preview
+                size_hint_y: None
+                halign:"center"
+                font_size:"18sp"
+            MDFillRoundFlatIconButton:
+                icon:"arrow-right"
+                text:"Capture code"
+                pos_hint:{"center_x":.5, "center_y":.3}
+                on_release:
+                    app.screen_capture("home")
 
     MDScreen:
         name:"scanner"

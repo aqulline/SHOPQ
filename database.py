@@ -165,6 +165,52 @@ class DataBase:
         date_frmt = f"{month_name} {str(day)}"
         return date_frmt
 
+    def get_pice(self, pric):
+        coma = '{:,}'.format(int(pric))
+        pric = coma
+
+        len = pric.__len__()
+
+        if len == 5:
+            s = pric.index(",")
+            num = pric[s - 1]
+            num2 = pric[s + 1]
+
+            pric = f"{num}{num2}00"
+
+            return pric
+
+        elif len == 3:
+            s = pric[0]
+
+            pric = f"{s}00"
+
+            return pric
+
+        elif len == 6:
+            s = pric.index(",")
+            num = pric[:s]
+            num2 = pric[s + 1]
+
+            pric = f"{num}{num2}00"
+
+            return pric
+
+    def get_data(self, data):
+        pric, name = new_data = data.strip().split(" ")[1], data.strip().split(" ")[4:]
+
+        new_name = ""
+        for i in name:
+            print(i)
+            if name.index(i) == 0:
+                new_name = i
+            else:
+                new_name = new_name + " " + i
+        name = new_name
+        pric = self.get_pice(pric)
+
+        return [name, pric]
+
     def day_remain(self, exp_date):
         nowoy = datetime.datetime.now().date().year
         nowom = datetime.datetime.now().date().month
