@@ -13,6 +13,10 @@ ScreenManager:
                 text: 'Trans.'
                 icon: 'notebook-outline'
                 FloatLayout:
+                    Image:
+                        id:nodata
+                        pos_hint:{"center_x":.5, "center_y":.4}
+                        size: 700, 700
                     MoneyCard:
                         #md_bg_color:165/255, 184/255, 189/255, 1
                         md_bg_color:36/255, 146/255, 255/255, 1
@@ -61,6 +65,33 @@ ScreenManager:
                                 font_style:"H5"
                                 font_name:'components/fonts/Gill Sans.otf'
                                 pos_hint:{"center_x":.6, "center_y":.1}
+                    DateTotalAmount:
+                        pos_hint:{"center_y":.74}
+                    DataContainer:
+                        Details:
+                            height:wali.height
+                            orientation:"vertical"
+                            RecycleView:
+                                id: customers
+                                key_viewclass: 'viewclass'
+                                key_size: 'height'
+                                pos_hint:{"center_x":.5,"center_y":.5}
+                                RecycleBoxLayout:
+                                    id:wali
+                                    spacing:dp(1)
+                                    padding: dp(10)
+                                    default_size: None, dp(55)
+                                    default_size_hint: 1, None
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                                    orientation: 'vertical'
+                    MDFloatingActionButton:
+                        icon:"plus"
+                        id:plus
+                        pos_hint:{"center_x":.84,"center_y":.14}
+                        md_bg_color:36/255, 146/255, 255/255, 1
+                        on_release:
+                            app.screen_capture("sell")
             MDBottomNavigationItem:
                 name: 'product'
                 text: 'Products'
@@ -85,7 +116,14 @@ ScreenManager:
                                     id:product_code
                                     icon:"barcode"
                                     text:"product barcode"
-                                    pos_hint:{"center_x":.5, "center_y":.9}
+                                    pos_hint:{"center_x":.3, "center_y":.9}
+                                    on_release:
+                                        app.screen_capture("scanner")
+                                MDFillRoundFlatIconButton:
+                                    id:product_code
+                                    icon:"qrcode-scan"
+                                    text:"scan Qrcode"
+                                    pos_hint:{"center_x":.7, "center_y":.9}
                                     on_release:
                                         app.screen_capture("scanner")
                                 MDTextField:
@@ -121,7 +159,7 @@ ScreenManager:
                                     font_size:"22sp"
                                     pos_hint:{'center_x':.2, 'center_y':.4}
                                 ExpireYear:
-                                    id:product_quantity
+                                    id:product_year
                                     mode: "rectangle"
                                     fill_color: 0, 0, 0, .4
                                     size_hint: .2, .1
@@ -130,7 +168,7 @@ ScreenManager:
                                     text_color: 0, 0, 0, 1
                                     font_size: dp(25)
                                 ExpireMonth:
-                                    id:product_quantity
+                                    id:product_month
                                     mode: "rectangle"
                                     fill_color: 0, 0, 0, .4
                                     size_hint: .2, .1
@@ -142,12 +180,107 @@ ScreenManager:
                                     icon:"arrow-down-thick"
                                     text:"Save details"
                                     pos_hint:{"center_x":.5, "center_y":.1}
+                                    on_release:
+                                        app.save_product(product_name.text, product_price.text, product_quantity.text,
+                                        product_code.text, product_year.text, product_month.text)
                         Tab:
                             title:"Search Product"
                             FloatLayout:
                                 MDLabel:
+                                    text:"Search Product"
                                     halign:"center"
-                                    text:"hello"
+                                    font_size:"25sp"
+                                    pos_hint:{"center_x":.23, "center_y":.95}
+                                Front:
+                                    pos_hint:{'center_x':.5, 'center_y':.45}
+                                    size:app.size_x/1.1,app.size_y/1.4
+
+                                MDLabel:
+                                    text:"Product Barcode"
+                                    halign:"left"
+                                    font_size:"20sp"
+                                    pos_hint:{"center_x":.6, "center_y":.73}
+                                MDLabel:
+                                    text:"8867568776876"
+                                    halign:"center"
+                                    font_size:"18sp"
+                                    pos_hint:{"center_x":.7, "center_y":.73}
+                                MDLabel:
+                                    text:"Product Name"
+                                    halign:"left"
+                                    font_size:"20sp"
+                                    pos_hint:{"center_x":.6, "center_y":.63}
+                                MDLabel:
+                                    text:"Uhai"
+                                    halign:"center"
+                                    font_size:"18sp"
+                                    pos_hint:{"center_x":.7, "center_y":.63}
+                                MDLabel:
+                                    text:"Product Expire"
+                                    halign:"left"
+                                    font_size:"20sp"
+                                    pos_hint:{"center_x":.6, "center_y":.53}
+                                MDLabel:
+                                    text:"2024-7"
+                                    halign:"center"
+                                    font_size:"18sp"
+                                    pos_hint:{"center_x":.7, "center_y":.53}
+                                MDLabel:
+                                    text:"Days to expire"
+                                    halign:"left"
+                                    font_size:"20sp"
+                                    pos_hint:{"center_x":.6, "center_y":.43}
+                                MDLabel:
+                                    text:"436"
+                                    halign:"center"
+                                    font_size:"18sp"
+                                    pos_hint:{"center_x":.7, "center_y":.43}
+                                MDLabel:
+                                    text:"Quantity"
+                                    halign:"left"
+                                    font_size:"20sp"
+                                    pos_hint:{"center_x":.6, "center_y":.33}
+                                MDLabel:
+                                    text:"2000"
+                                    halign:"center"
+                                    font_size:"18sp"
+                                    pos_hint:{"center_x":.7, "center_y":.33}
+                                MDLabel:
+                                    text:"Sold Amount"
+                                    halign:"left"
+                                    font_size:"20sp"
+                                    pos_hint:{"center_x":.6, "center_y":.23}
+                                MDLabel:
+                                    text:"76"
+                                    halign:"center"
+                                    font_size:"18sp"
+                                    pos_hint:{"center_x":.7, "center_y":.23}
+                                MDLabel:
+                                    text:"Sold Quantity"
+                                    halign:"left"
+                                    font_size:"20sp"
+                                    pos_hint:{"center_x":.6, "center_y":.13}
+                                MDLabel:
+                                    text:"67"
+                                    halign:"center"
+                                    font_size:"18sp"
+                                    pos_hint:{"center_x":.7, "center_y":.13}
+                                MDLabel:
+                                    text:"Number Sold"
+                                    halign:"left"
+                                    font_size:"20sp"
+                                    pos_hint:{"center_x":.6, "center_y":.05}
+                                MDLabel:
+                                    text:"78"
+                                    halign:"center"
+                                    font_size:"18sp"
+                                    pos_hint:{"center_x":.7, "center_y":.05}
+                                MDFillRoundFlatIconButton:
+                                    icon:"barcode"
+                                    text:"scan product"
+                                    pos_hint:{"center_x":.5, "center_y":.83}
+                                    on_release:
+                                        app.screen_capture("scanner_sell")
 
             MDBottomNavigationItem:
                 name: 'Trends'
@@ -159,6 +292,62 @@ ScreenManager:
                 text: 'Debts'
                 icon: 'cash-minus'
                 FloatLayout:
+
+    MDScreen:
+        name:"sell"
+        FloatLayout:
+            MDLabel:
+                text:"Sell Product"
+                halign:"center"
+                font_size:"25sp"
+                pos_hint:{"center_x":.23, "center_y":.93}
+            Front:
+                pos_hint:{'center_x':.5, 'center_y':.6}
+            MDFillRoundFlatIconButton:
+                icon:"barcode"
+                text:"scan product"
+                pos_hint:{"center_x":.5, "center_y":.73}
+                on_release:
+                    app.screen_capture("scanner_sell")
+            MDSeparator:
+                pos_hint:{"center_x":.5, "center_y":.68}
+            MDLabel:
+                text:app.product_name
+                halign:"left"
+                font_size:"30sp"
+                pos_hint:{"center_x":.62, "center_y":.64}
+            MDLabel:
+                text:app.product_price
+                halign:"left"
+                font_size:"22sp"
+                pos_hint:{"center_x":.62, "center_y":.6}
+            MDLabel:
+                id:sold_amount
+                text:"0/="
+                halign:"left"
+                font_size:"30sp"
+                pos_hint:{"center_x":1.2, "center_y":.62}
+            NumberOnlyField:
+                id:quantity_sell
+                mode: "rectangle"
+                fill_color: 0, 0, 0, .4
+                size_hint: .2, .08
+                pos_hint:{'center_x':.4, 'center_y':.5}
+                hint_text:"Quantity"
+                text_color: 0, 0, 0, 1
+                font_size: dp(25)
+                on_text:
+                    app.amount_calc()
+            MDRaisedButton:
+                text: "Sell"
+                size_hint: .2, .06
+                pos_hint:{'center_x':.7, 'center_y':.495}
+                on_release:
+                    app.sell_product()
+
+
+
+
     MDScreen:
         name:"scanner"
         on_enter:
@@ -183,7 +372,43 @@ ScreenManager:
                 on_release:
                     app.screen_capture("home")
                     product_code.text = result_preview.text
+    MDScreen:
+        name:"scanner_sell"
+        on_enter:
+            app.sell_preview()
+        on_leave:
+            app.stop_camera_sell()
+        MDBoxLayout:
+            orientation: "vertical"
+            Scan_Analyze:
+                aspect_ratio: "16:9"
+                extracted_data:app.get_barcode_sell
+                id:preview_sell
+            MDLabel:
+                id:sell_preview
+                size_hint_y: None
+                halign:"center"
+                font_size:"18sp"
+            MDFillRoundFlatIconButton:
+                icon:"arrow-right"
+                text:"Done!"
+                pos_hint:{"center_x":.5, "center_y":.3}
+                on_release:
+                    app.screen_capture("sell")
+                    app.caller_details()
 
+<Details@MDBoxLayout>:
+    radius:9
+    adaptive_height:True
+    md_bg_color:.1,.1,.2,.1
+    pos_hint:{"center_x":.5,"top":.8}
+    orientation:"vertical"
+
+<DataContainer@MDBoxLayout>:
+    size:dp(50),dp(50)
+    adaptive_height:True
+    orientation:"vertical"
+    pos_hint:{"top":.7}
 
 <MoneyCard@MDCard>:
     orientation: "vertical"
@@ -198,3 +423,83 @@ ScreenManager:
     focus_behavior: False
     ripple_behavior: False
     elevation: 9
+
+<Front@MDBoxLayout>:
+    radius:20
+    #height:240
+    size:app.size_x/1.1,app.size_y/3
+    md_bg_color: 255/255, 192/255, 203/255, .4
+    adaptive_height:True
+    adaptive_width:True
+
+<RowCard>:
+    #orientation: "vertical"
+    md_bg_color: 1, 1, 1, 1
+    pos_hint:{"center_x":.5,"center_y":.3}
+    padding: "10dp"
+    #spacing: "5dp"
+    border_radius: 3
+    border_color_a: .5
+    border_color_a: 1
+    adaptive_height:True
+    radius: [3]
+    size_hint: None, None
+    size: app.size_x/1.5, app.size_y/11
+    focus_behavior: False
+    ripple_color:.9, .9, .95, 1
+    ripple_behavior: True
+    FloatLayout:
+        MDIcon:
+            icon:root.icon
+            badge_icon:"cat"
+            font_size:"30sp"
+            theme_text_color:"Custom"
+            text_color: 1, .5, .5, 1
+            pos_hint:{"center_x":.5,"center_y":.5}
+        MDLabel:
+            text:root.name
+            font_size:"15sp"
+            #halign:"center"
+            pos_hint:{"center_x":.63,"center_y":.5}
+        MDLabel:
+            text:root.price
+            pos_hint:{"center_x":1.3,"center_y":.5}
+<More>:
+    adaptive_height:True
+    md_bg_color:6/255, 146/255, 255/255, 1
+    size_hint:None, None
+    size:app.size_x/1.5, app.size_y/35
+    radius:2
+    ripple_color:.1,.4,.4,1
+    ripple_behavior: True
+    MDIcon:
+        icon:root.icon
+        halign:"center"
+        font_size:"35sp"
+<DateTotalAmount@MDBoxLayout>:
+    size:dp(100),dp(50)
+    adaptive_height:True
+    orientation:"vertical"
+    MDBoxLayout:
+        md_bg_color:36/255, 146/255, 255/255, 1
+        MDLabel:
+            text:app.date_frm
+            halign:"center"
+            font_size:"15sp"
+            pos_hint:{"center_x":.2}
+            height: self.texture_size[1]
+            width: self.texture_size[1]
+        MDLabel:
+            text:"Amount:-"+app.today_amount+"/="
+            halign:"center"
+            font_size:"12sp"
+            pos_hint:{"center_x":.6}
+            height: self.texture_size[1]
+            width: self.texture_size[1]
+        MDLabel:
+            text:"Sold:+"+app.today_sold+"/="
+            halign:"center"
+            font_size:"12sp"
+            pos_hint:{"center_x":.8}
+            height: self.texture_size[1]
+            width: self.texture_size[1]
