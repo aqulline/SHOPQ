@@ -1,4 +1,5 @@
 import datetime
+import re
 
 from PIL import Image
 from kivy.base import EventLoop
@@ -77,6 +78,23 @@ class ExpireMonth(MDTextField):
                 return super(ExpireMonth, self).insert_text(substring, from_undo=from_undo)
 
 
+class NumberField(MDTextField):
+    pat = re.compile('[^0-9]')
+
+    def insert_text(self, substring, from_undo=False):
+        if len(self.text) >= 10 or not substring.isdigit():
+            return
+
+        if len(self.text) == 0:
+            if substring != "0":
+                return
+        elif len(self.text) == 1:
+            if substring != "7" and substring != "6":
+                return
+
+        return super(NumberField, self).insert_text(substring, from_undo=from_undo)
+
+
 class NumberOnlyField(MDTextField):
     def insert_text(self, substring, from_undo=False):
         if substring.isdigit():
@@ -131,6 +149,8 @@ class MainApp(MDApp):
     # Selling data
     amount_sold = StringProperty("")
     quantity_sold = StringProperty("")
+
+    date = StringProperty("")
 
     def on_start(self):
         self.keyboard_hooker()
@@ -370,10 +390,10 @@ class MainApp(MDApp):
 
     def get_search_data(self, *args):
         data = DB.get_product(DB(), self.product_barcode)
-
+        print(data)
         if data:
-            self.days_to_exp = data['days_to_exp']
-            self.number_sold = data['number_sold']
+            self.days_to_exp = str(data['days_to_exp'])
+            self.number_sold = str(data['number_sold'])
             self.code = data['product_barcode']
             self.p_expire = data['product_expire']
             self.p_name = data['product_name']
@@ -391,6 +411,14 @@ class MainApp(MDApp):
         screen functions
 
     """
+
+    def add_debtor(self, phone, product, price, d, m):
+        if int(d) < 10:
+            h = f"{0}{d}"
+            self.date = f"{m}-{h}"
+        else:
+            self.date = f"{m}-{d}"
+        DB.add_debtor(DB(), phone, product, price, self.date)
 
     def screen_capture(self, screen):
         sm = self.root

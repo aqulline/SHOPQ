@@ -286,7 +286,76 @@ ScreenManager:
                 name: 'Debts'
                 text: 'Debts'
                 icon: 'cash-minus'
-                FloatLayout:
+                MDBoxLayout:
+                    orientation: "vertical"
+                    MDToolbar:
+                        title: "Debt manager"
+                        specific_text_color:78/255, 82/255, 84/255, 1
+                        md_bg_color:1, 1, 1, 1
+                    MDTabs:
+                        allow_stretch:False
+                        background_color:1, 1, 1, 1
+                        indicator_color:36/255, 146/255, 255/255, 1
+                        tab_hint_x:True
+                        text_color_active:78/255, 82/255, 84/255, 1
+                        text_color_normal:.5, .5, .5, 1
+                        Tab:
+                            title: "Add Debtor"
+                            FloatLayout:
+                                NumberField:
+                                    id:debt_phone
+                                    mode: "rectangle"
+                                    fill_color: 0, 0, 0, .4
+                                    size_hint: .5, .1
+                                    pos_hint:{'center_x':.5, 'center_y':.9}
+                                    hint_text:"Phone number"
+                                    text_color: 0, 0, 0, 1
+                                    font_size: dp(25)
+                                MDTextField:
+                                    id:debt_product
+                                    mode: "rectangle"
+                                    fill_color: 0, 0, 0, .4
+                                    size_hint: .5, .1
+                                    pos_hint:{'center_x':.5, 'center_y':.75}
+                                    hint_text:"Product name"
+                                    text_color: 0, 0, 0, 1
+                                    font_size: dp(25)
+                                MDTextField:
+                                    id:debt_price
+                                    mode: "rectangle"
+                                    fill_color: 0, 0, 0, .4
+                                    size_hint: .5, .1
+                                    pos_hint:{'center_x':.5, 'center_y':.6}
+                                    hint_text:"Debt price"
+                                    text_color: 0, 0, 0, 1
+                                    font_size: dp(25)
+                                ExpireYear:
+                                    id:debt_date
+                                    mode: "rectangle"
+                                    fill_color: 0, 0, 0, .4
+                                    size_hint: .2, .1
+                                    pos_hint:{'center_x':.35, 'center_y':.45}
+                                    hint_text:"Date"
+                                    text_color: 0, 0, 0, 1
+                                    font_size: dp(25)
+                                ExpireMonth:
+                                    id:debt_month
+                                    mode: "rectangle"
+                                    fill_color: 0, 0, 0, .4
+                                    size_hint: .2, .1
+                                    pos_hint:{'center_x':.65, 'center_y':.45}
+                                    hint_text:"Month"
+                                    text_color: 0, 0, 0, 1
+                                    font_size: dp(25)
+                                MDFillRoundFlatIconButton:
+                                    icon:"arrow-down-thick"
+                                    text:"Save details"
+                                    pos_hint:{"center_x":.5, "center_y":.3}
+                                    on_release:
+                                        app.add_debtor(debt_phone.text, debt_product.text, debt_price.text, debt_date.text, debt_month.text)
+
+                        Tab:
+                            title:"View Debts"
 
     MDScreen:
         name:"sell"

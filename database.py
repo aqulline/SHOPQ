@@ -150,6 +150,25 @@ class DataBase:
 
                     return False
 
+    def add_debtor(self, phone, product, price, date):
+        if True:
+            import firebase_admin
+            firebase_admin._apps.clear()
+            from firebase_admin import credentials, initialize_app, db
+            if not firebase_admin._apps:
+                cred = credentials.Certificate("credential/farmzon-abdcb-c4c57249e43b.json")
+                initialize_app(cred, {'databaseURL': 'https://farmzon-abdcb.firebaseio.com/'})
+
+                data = {
+                    "product_name": product,
+                    "product_price": price,
+                    "debtor_phone": phone,
+                    "debt_date": date,
+                }
+
+                ref = db.reference('ShopCode').child("Debtors").child(phone)
+                ref.set(data)
+                toast("saved")
 
     def get_date(self):
         return str(datetime.datetime.now()).split(" ")[0]
@@ -234,3 +253,5 @@ class DataBase:
         v = ytm2 - ytm1 + yd
 
         return v
+
+
